@@ -298,5 +298,3 @@ Para suporte e dúvidas:
 - Verifique os logs do sistema
 
 ---
-
-**Desenvolvido com ❤️ para segurança inteligente**
