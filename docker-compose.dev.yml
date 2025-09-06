@@ -1,0 +1,135 @@
+version: '3.8'
+
+services:
+  # Backend API (desenvolvimento)
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=true
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/security_cam
+      - MONGODB_URL=mongodb://mongodb:27017/security_cam
+      - REDIS_URL=redis://redis:6379
+      - KAFKA_BROKERS=kafka:9092
+    depends_on:
+      - postgres
+      - mongodb
+      - redis
+      - kafka
+    volumes:
+      - ./backend:/app
+      - ./shared:/shared
+    networks:
+      - security-network
+
+  # Frontend Dashboard (desenvolvimento)
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+      - REACT_APP_WS_URL=ws://localhost:8000/ws
+    depends_on:
+      - backend
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    networks:
+      - security-network
+
+  # AI Engine (desenvolvimento)
+  ai-engine:
+    build: ./ai-engine
+    ports:
+      - "8001:8001"
+    environment:
+      - DEBUG=true
+      - MODEL_PATH=/models
+      - REDIS_URL=redis://redis:6379
+      - KAFKA_BROKERS=kafka:9092
+      - BACKEND_API_URL=http://backend:8000
+      - BACKEND_WS_URL=ws://backend:8000/ws
+    depends_on:
+      - redis
+      - kafka
+      - backend
+    volumes:
+      - ./ai-engine:/app
+      - ./models:/models
+      - ./data:/data
+    networks:
+      - security-network
+
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=security_cam
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - security-network
+
+  # MongoDB
+  mongodb:
+    image: mongo:6
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+    volumes:
+      - mongodb_data:/data/db
+    ports:
+      - "27017:27017"
+    networks:
+      - security-network
+
+  # Redis Cache
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - security-network
+
+  # Apache Kafka
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://kafka:9092
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+    depends_on:
+      - zookeeper
+    ports:
+      - "9092:9092"
+    networks:
+      - security-network
+
+  # Zookeeper
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      - ZOOKEEPER_CLIENT_PORT=2181
+      - ZOOKEEPER_TICK_TIME=2000
+    ports:
+      - "2181:2181"
+    networks:
+      - security-network
+
+volumes:
+  postgres_data:
+  mongodb_data:
+  redis_data:
+
+networks:
+  security-network:
+    driver: bridge

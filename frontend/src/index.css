@@ -1,0 +1,286 @@
+/* Reset e estilos globais */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #0a0a0a;
+  color: #ffffff;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  height: 100%;
+}
+
+code {
+  font-family: 'Fira Code', 'Monaco', 'Consolas', 'Courier New', monospace;
+}
+
+/* Scrollbar personalizada */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 5px rgba(0, 230, 118, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(0, 230, 118, 0.8);
+  }
+  100% {
+    box-shadow: 0 0 5px rgba(0, 230, 118, 0.5);
+  }
+}
+
+/* Classes utilitárias */
+.fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.pulse {
+  animation: pulse 2s infinite;
+}
+
+.glow {
+  animation: glow 2s infinite;
+}
+
+/* Estilos para componentes específicos */
+.video-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.detection-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.detection-box {
+  position: absolute;
+  border: 2px solid #00e676;
+  background: rgba(0, 230, 118, 0.1);
+  border-radius: 4px;
+}
+
+.detection-label {
+  position: absolute;
+  top: -25px;
+  left: 0;
+  background: #00e676;
+  color: #000;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* Estilos para gráficos */
+.chart-container {
+  position: relative;
+  width: 100%;
+  height: 300px;
+}
+
+.chart-container canvas {
+  border-radius: 8px;
+}
+
+/* Estilos para tabelas */
+.data-grid {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 8px;
+}
+
+.data-grid .MuiDataGrid-root {
+  border: none;
+}
+
+.data-grid .MuiDataGrid-cell {
+  border-bottom: 1px solid #333;
+}
+
+.data-grid .MuiDataGrid-columnHeaders {
+  background: #2a2a2a;
+  border-bottom: 2px solid #333;
+}
+
+/* Estilos para modais */
+.modal-backdrop {
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 12px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Estilos para notificações */
+.notification-success {
+  background: linear-gradient(135deg, #00e676, #00b248);
+  color: #000;
+}
+
+.notification-error {
+  background: linear-gradient(135deg, #ff1744, #c4001d);
+  color: #fff;
+}
+
+.notification-warning {
+  background: linear-gradient(135deg, #ff9800, #f57c00);
+  color: #000;
+}
+
+.notification-info {
+  background: linear-gradient(135deg, #2196f3, #1976d2);
+  color: #fff;
+}
+
+/* Estilos para status indicators */
+.status-online {
+  color: #00e676;
+}
+
+.status-offline {
+  color: #ff1744;
+}
+
+.status-warning {
+  color: #ff9800;
+}
+
+.status-info {
+  color: #2196f3;
+}
+
+/* Estilos para loading */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid #333;
+  border-radius: 50%;
+  border-top-color: #00e676;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .chart-container {
+    height: 200px;
+  }
+  
+  .detection-label {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .chart-container {
+    height: 150px;
+  }
+}
+
+/* Estilos para impressão */
+@media print {
+  body {
+    background: white;
+    color: black;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+}
